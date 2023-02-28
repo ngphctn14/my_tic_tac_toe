@@ -5,10 +5,10 @@ some info bout the game:
 
 
 
- | |
+O|X|O
 -.-.-
- | |
+X|O|X
 -.-.-
- | |
+X|O|X
 
 enjoy
