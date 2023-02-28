@@ -52,7 +52,6 @@ int main() {
         if(col==3)
             col=4;
         board[row][col]=piece;
-        printf("%d\n%d\n", owins, xwins);
     } while(1);
     if(owins) {
         printf("O won\nX lost\n");
