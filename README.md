@@ -4,3 +4,9 @@ some info bout the game:
 - its a console application so make sure to have a c compiler installed on your device (y)
 
 enjoy
+
+ | |
+-.-.-
+ | |
+-.-.-
+ | |
