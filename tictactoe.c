@@ -104,14 +104,14 @@ void posChanger(int *row, int *col) {
 }
 
 void winCond(int count, char piece) {
-    if(count==2) {
-        if(piece=='O') {
-            owins=1;
-            return;
-        } else {
-            xwins=1;
-            return;
-        }
+    if(count!=2)
+        return;
+    if(piece=='O') {
+        owins=1;
+        return;
+    } else {
+        xwins=1;
+        return;
     }
 }
 
