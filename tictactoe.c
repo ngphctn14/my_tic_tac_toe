@@ -4,29 +4,21 @@ int draw;
 int owins=0;
 int xwins=0;
 
-int isValid(int, int, char);
+int isValidInput(int, int, char);
 int isValidTurn(int, char);
 int isValidTurn1(int, int, char[6][6]);
 void printBoard(char[6][6]);
 void result(char[6][6]);
+void posChanger(int*, int*);
+void setBoard(char[6][6]);
 
 int main() {
     char board[6][6];
     int col, row, stop=0;
     char piece;
-    int i, j, count=0;
-    for(i=0; i<5; i++) {
-        for(j=0; j<5; j++) {
-            if(i%2==0 && j%2==0)
-                board[i][j]=' ';
-            else if(i%2==0 && j%2==1)
-                board[i][j]='|';
-            else if(i%2==1 && j%2==0)
-                board[i][j]='-';
-            else if(i%2==1 && j%2==1)
-                board[i][j]='.';
-        }
-    }
+    int count=0;
+    setBoard(board);
+    printf("\n================ Tic Tac Toe ================\n\n");
     do {
         printBoard(board);
         if(count>4)
@@ -47,33 +39,42 @@ int main() {
                 break;
             }
             printf("\n");
-        } while(!isValid(row, col, piece) || !isValidTurn(count, piece) || !isValidTurn1(row, col, board));
+        } while(!isValidInput(row, col, piece) || !isValidTurn(count, piece) || !isValidTurn1(row, col, board));
         count++;
         if(stop) {
-            printf("\nThe game has been stopped\n");
+            printf("\nThe game has been stopped.\n");
             break;
         }
-        if(row==1)
-            row=0;
-        if(col==1)
-            col=0;
-        if(row==3)
-            row=4;
-        if(col==3)
-            col=4;
+        posChanger(&col, &row);
         board[row][col]=piece;
     } while(1);
-    if(owins) {
+    if(owins)
         printf("\nO won\nX lost\n");
-    } else if(xwins) {
+    else if(xwins)
         printf("\nX won\nO lost\n");
-    } else if(draw) {
+    else if(draw)
         printf("\nDraw\n");
-    }
     return 0;
 }
 
-int isValid(int row, int col, char piece) {
+void setBoard(char a[6][6]) {
+    int i, j;
+    for(i=0; i<5; i++) {
+        for(j=0; j<5; j++) {
+            if(i%2==0 && j%2==0)
+                a[i][j]=' ';
+            else if(i%2==0 && j%2==1)
+                a[i][j]='|';
+            else if(i%2==1 && j%2==0)
+                a[i][j]='-';
+            else if(i%2==1 && j%2==1)
+                a[i][j]='.';
+        }
+    }
+
+}
+
+int isValidInput(int row, int col, char piece) {
     return ((col>0 && col<=3)) && ((row>0 && row<=3)) && (piece=='O' || piece=='X');
 }
 
@@ -86,17 +87,21 @@ int isValidTurn(int count, char piece) {
 }
 
 int isValidTurn1(int row, int col, char a[6][6]) {
-    if(row==1)
-        row=0;
-    if(col==1)
-        col=0;
-    if(row==3)
-        row=4;
-    if(col==3)
-        col=4;
+    posChanger(&col, &row);
     if(a[row][col]=='O' || a[row][col]=='X')
         return 0;
     return 1;
+}
+
+void posChanger(int *row, int *col) {
+    if(*row==1)
+        (*row)--;
+    else if(*row==3)
+        (*row)++;
+    if(*col==1)
+        (*col)--;
+    else if(*col==3)
+        (*col)++;
 }
 
 void printBoard(char a[6][6]) {
