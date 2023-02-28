@@ -12,7 +12,7 @@ void result(char[6][6]);
 
 int main() {
     char board[6][6];
-    int col, row;
+    int col, row, stop=0;
     char piece;
     int i, j, count=0;
     for(i=0; i<5; i++) {
@@ -39,10 +39,20 @@ int main() {
             break;
         }
         do {
+            printf("\n");
             printf("Enter row, col, piece: ");
             scanf("%d %d %c", &row, &col, &piece);
+            if(row==5 || col==5 || piece=='5') {
+                stop=1;
+                break;
+            }
+            printf("\n");
         } while(!isValid(row, col, piece) || !isValidTurn(count, piece) || !isValidTurn1(row, col, board));
         count++;
+        if(stop) {
+            printf("\nThe game has been stopped\n");
+            break;
+        }
         if(row==1)
             row=0;
         if(col==1)
@@ -54,9 +64,9 @@ int main() {
         board[row][col]=piece;
     } while(1);
     if(owins) {
-        printf("O won\nX lost\n");
+        printf("\nO won\nX lost\n");
     } else if(xwins) {
-        printf("X won\nO lost\n");
+        printf("\nX won\nO lost\n");
     } else if(draw) {
         printf("\nDraw\n");
     }
