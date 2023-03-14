@@ -1,19 +1,22 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int owins=0, xwins=0, draw=0;
 
-int isValidInput(int, int, char);
-int isValidTurn(int, char);
-int isValidMove(int, int, char[6][6]);
-void printBoard(char[6][6]);
-void result(char[6][6]);
+void seperate(char*, char[3][2]);
+int isValidInput(int, int, char*);
+int isValidTurn(int, char*);
+int isValidMove(int, int, char[5][6]);
+void printBoard(char[5][6]);
+void result(char[5][6]);
 void posChanger(int*, int*);
-void setBoard(char[6][6]);
+void setBoard(char[5][6]);
 void winCond(int, char);
 
 int main() {
-    char board[6][6], piece;
-    int col, row, stop=0, count=0;
+    char board[5][6], piece[2], input1[69], input2[3][2];
+    int col, row, stop=0, count=0, i;
     setBoard(board);
     printf("\n================ Tic Tac Toe ================\n\n");
     do {
@@ -27,10 +30,19 @@ int main() {
             break;
         }
         do {
-            printf("\n");
-            printf("Enter row, col, piece: ");
-            scanf("%d %d %c", &row, &col, &piece);
-            if(row==5 || col==5 || piece=='5') {
+            printf("\nEnter row, col, piece: ");
+            for(i=0; i<3; i++)
+                memset(input2[i], 0, strlen(input2[i]));
+            scanf(" %[^\n]", input1);
+            if(strlen(input1)!=5) {
+                printf("\n");
+                continue;
+            }
+            seperate(input1, input2);
+            row=atoi(input2[0]);
+            col=atoi(input2[1]);
+            strcpy(piece, input2[2]);
+            if(row==0 && col==0 && !strcmp(piece, "0")) {
                 stop=1;
                 break;
             }
@@ -42,18 +54,31 @@ int main() {
             break;
         }
         posChanger(&col, &row);
-        board[row][col]=piece;
+        board[row][col]=piece[0];
     } while(69/*funny number*/);
     if(owins)
-        printf("\nO won\nX lost\n");
+        printf("\nO won! :)\nX lost. :(\n");
     else if(xwins)
-        printf("\nX won\nO lost\n");
+        printf("\nX won! :)\nO lost. :(\n");
     else if(draw)
-        printf("\nDraw\n");
+        printf("\nDraw!\n");
     return 0;
 }
 
-void setBoard(char a[6][6]) {
+void seperate(char *a, char b[3][2]) {
+    int i, j=0, k=0;
+    for(i=0; a[i]!='\0'; i++) {
+        if(a[i]==' ') {
+            j++;
+            k=0;
+            continue;
+        }
+        b[j][k]=a[i];
+        k++;
+    }
+}
+
+void setBoard(char a[5][6]) {
     int i, j;
     for(i=0; i<5; i++) {
         for(j=0; j<5; j++) {
@@ -70,20 +95,20 @@ void setBoard(char a[6][6]) {
 
 }
 
-int isValidInput(int row, int col, char piece) {
-    return ((col>0 && col<=3)) && ((row>0 && row<=3)) && (piece=='O' || piece=='X');
+int isValidInput(int row, int col, char* piece) {
+    return (((col>0 && col<=3)) && ((row>0 && row<=3)) && (!strcmp(piece, "O") || !strcmp(piece, "X")));
 }
 
-int isValidTurn(int count, char piece) {
-    return ((count%2==0 && piece=='X') || (count%2==1 && piece=='O'));
+int isValidTurn(int count, char* piece) {
+    return ((count%2==0 && !strcmp(piece, "X")) || (count%2==1 && !strcmp(piece, "O")));
 }
 
-int isValidMove(int row, int col, char a[6][6]) {
+int isValidMove(int row, int col, char a[5][6]) {
     posChanger(&col, &row);
     return !(a[row][col]=='O' || a[row][col]=='X');
 }
 
-void printBoard(char a[6][6]) {
+void printBoard(char a[5][6]) {
     int i, j;
     for(i=0; i<5; i++) {
         for(j=0; j<5; j++)
@@ -115,7 +140,7 @@ void winCond(int count, char piece) {
     }
 }
 
-void result(char a[6][6]) {
+void result(char a[5][6]) {
     int i, j, count;
     for(i=0; i<3; i+=2) {
         count=0;
